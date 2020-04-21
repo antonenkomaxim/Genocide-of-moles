@@ -19,7 +19,7 @@ class StartFild extends React.Component {
 	}
 
 
-	startOrNot = () => {
+	startingOrNot = () => {
 		return (
 			this.state.isStartGame ? <GameFild /> : <StartGame />
 		)
@@ -29,9 +29,10 @@ class StartFild extends React.Component {
 		return (
 			<div className="game-fild">
 				{
-					this.startOrNot()
+					this.startingOrNot()
 				}
 			</div >
+
 		);
 	}
 };

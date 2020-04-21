@@ -13,32 +13,41 @@ class GameFild extends React.Component {
 			failed: 0,
 			lvl: 1,
 			molesLifetime: 4000,
-			cards: [
-				{
-					classStatus: "hole"
-				},
-				{
-					classStatus: "hole"
-				},
-				{
-					classStatus: "hole"
-				},
-				{
-					classStatus: "hole"
-				},
-				{
-					classStatus: "hole"
-				},
-				{
-					classStatus: "hole"
-				},
-			]
+			cards:
+				// [
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// 	{
+				// 		classStatus: "hole"
+				// 	},
+				// ]
+				(new Array(6)).fill({ classStatus: "hole" })
 		};
 	}
 
 	//время жизни крота
 	lifetime = () => {
 		let newMolesLifetime;
+
+
+		// if (this.state.score > 10) {
+		// 	newMolesLifetime -= (this.state.lvl * 350);
+		// }
+		// this.props.onAddTime(newMolesLifetime);
+		// this.setState({ molesLifetime: newMolesLifetime });
 
 		switch (this.state.score) {
 			case 10:
@@ -95,11 +104,6 @@ class GameFild extends React.Component {
 				this.setState({ molesLifetime: newMolesLifetime });
 				break;
 		}
-		// if (this.state.score > 10) {
-		// 	newMolesLifetime -= (this.state.lvl * 350);
-		// }
-		// this.props.onAddTime(newMolesLifetime);
-		// this.setState({ molesLifetime: newMolesLifetime });
 	}
 
 	//создаем игровые плитки
@@ -113,6 +117,8 @@ class GameFild extends React.Component {
 				onClick={this.onMosaicClick}>
 			</div>);
 		}
+		// console.log(holes);//перерисовует дивы с неправильным класс неймом
+
 		return holes;
 	}
 
@@ -252,14 +258,13 @@ class GameFild extends React.Component {
 		if (this.state.score === 100) {
 			return this.сreateWinMosaic();
 		}
+		// console.log(2);
+
 		return (
-			this.state.failed === 3 ? this.createGameOverMosaic() : this.createMosaic()
+			this.state.failed >= 3 ? this.createGameOverMosaic() : this.createMosaic()
 		)
 	}
 
-	addScore() {
-
-	}
 
 	render() {
 		return (
@@ -273,19 +278,24 @@ class GameFild extends React.Component {
 
 
 export default connect(
-	state => ({}),
+	state => ({
+		points: state.points,
+		fails: state.fails,
+		lvl: state.lvl,
+		time: state.time
+	}),
 	dispatch => ({
 		onAddScore: (points) => {
-			dispatch({ type: "ADD_SCORE", payload: points })
+			dispatch({ type: "ADD_SCORE", payload: { points: points } })
 		},
 		onAddFail: (fails) => {
-			dispatch({ type: "ADD_FAIL", payload: fails })
+			dispatch({ type: "ADD_FAIL", payload: { fails: fails } })
 		},
 		onAddLvl: (lvl) => {
-			dispatch({ type: "ADD_LVL", payload: lvl })
+			dispatch({ type: "ADD_LVL", payload: { lvl: lvl } })
 		},
 		onAddTime: (time) => {
-			dispatch({ type: "ADD_TIME", payload: time })
+			dispatch({ type: "ADD_TIME", payload: { time: time } })
 		}
 	})
 )(GameFild);
